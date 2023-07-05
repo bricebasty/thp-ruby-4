@@ -18,7 +18,7 @@ def return_to_menu
       puts "\nMerci d'avoir utilisé ce petit logiciel \u{1F600}\n"
       break
     else
-      puts "\n\e[41m\e[1mEntrée invalide.\e[0m\n"
+      puts "\n\e[41m\e[30m\e[1mEntrée invalide.\e[0m\n"
     end
   end
 end
@@ -117,7 +117,7 @@ def menu
     when "x"
       break
     else
-      puts "\n\e[41m\e[1mEntrée invalide.\e[0m"
+      puts "\n\e[41m\e[30m\e[1mEntrée invalide.\e[0m"
       retry_flag = true
     end
     break unless retry_flag

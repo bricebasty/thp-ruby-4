@@ -22,13 +22,13 @@ def return_to_menu
       puts "\nMerci d'avoir utilisé ce petit logiciel \u{1F600}\n"
       break
     else
-      puts "\n\e[41m\e[1mEntrée invalide.\e[0m\n"
+      puts "\n\e[41m\e[30m\e[1mEntrée invalide.\e[0m\n"
     end
   end
 end
 
 def top_10
-  puts "\n\e[1m\e[42mTop 10 des cryptos\e[0m\n\n"
+  puts "\n\e[1m\e[42m\e[30mTop 10 des cryptos\e[0m\n\n"
   top_10_cryptos = CRYPTO_HASH.sort_by {|key, value| value.to_f}
                                 .reverse.take(10)
   top_10_cryptos.each do |key, value|
@@ -38,7 +38,7 @@ def top_10
 end
 
 def bottom_10
-  puts "\n\e[1m\e[41mBottom 10 des cryptos\e[0m\n\n"
+  puts "\n\e[1m\e[41m\e[30mBottom 10 des cryptos\e[0m\n\n"
   bottom_10_cryptos = CRYPTO_HASH.sort_by {|key, value| value.to_f}
                                   .take(10)
   bottom_10_cryptos.each do |key, value|
@@ -48,21 +48,18 @@ def bottom_10
 end
 
 def top_10_under_threshold
-  puts "\n\e[1m\e[42mTop 10 des cryptos en dessous de 6000€\e[0m\n\n"
-
+  puts "\n\e[1m\e[42m\e[30mCryptos en dessous de 6000€\e[0m\n\n"
   top_10_cryptos = CRYPTO_HASH.select { |_, value| value.to_f < 6000 }
                                 .sort_by { |_, value| value.to_f }
-                                .reverse
-                                .take(10)
   top_10_cryptos.each do |key, value|
     puts "#{key} \u{2192} \e[32m\e[1m#{value}€\e[0m"
   end
-
+  puts "\n\e[1m\e[42m\e[30m\u{1F815} Cryptos en dessous de 6000€ \u{1F815}\e[0m\n\n"
   return_to_menu
 end
 
 def top_under_threshold
-  puts "\n\e[1m\e[42mTop crypto en dessous de 6000€\e[0m\n\n"
+  puts "\n\e[1m\e[42m\e[30mTop crypto en dessous de 6000€\e[0m\n\n"
   top_under_6000 = CRYPTO_HASH.select { |_, value| value.to_f < 6000 }
                               .max_by { |_, value| value.to_f }
   puts "#{top_under_6000[0]} \u{2192} \e[32m\e[1m#{top_under_6000[1]}€\e[0m"
@@ -71,7 +68,7 @@ end
 
 def menu
   loop do
-    puts "\n\e[33m\e[4mChoisis une fonction à exécuter\e[0m\n\n\e[42m1\e[0m Top 10\n\e[41m2\e[0m Bottom 10\n\e[43m3\e[0m Top 10 < 6000€\n\e[44m4\e[0m Top < 6000€\n\e[47mX\e[0m Quitter"
+    puts "\n\e[33m\e[4mChoisis une fonction à exécuter\e[0m\n\n\e[42m\e[30m1\e[0m Top 10\n\e[41m\e[30m2\e[0m Bottom 10\n\e[30m\e[43m3\e[0m < 6000€\n\e[30m\e[44m4\e[0m Top 1 < 6000€\n\e[30m\e[47mX\e[0m Quitter"
     input = user_prompt
     case input
     when "1"
@@ -89,7 +86,7 @@ def menu
     when "x"
       break
     else
-      puts "\n\e[41m\e[1mEntrée invalide.\e[0m"
+      puts "\n\e[41m\e[30m\e[1mEntrée invalide.\e[0m"
       retry_flag = true
     end
     break unless retry_flag
