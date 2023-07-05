@@ -5,7 +5,7 @@ prices = ["6558.07", "468.95", "0.487526", "762.84", "8.86", "85.26", "0.151268"
 CRYPTO_HASH = cryptocurrencies.zip(prices).to_h
 
 def user_prompt
-  print "\e[1m\e[31m> "
+  print "\e[1m\e[33m> "
   input = gets.chomp.downcase
   print "\e[0m"
   return input
@@ -27,45 +27,69 @@ def return_to_menu
   end
 end
 
-def highest_sort
-  puts "\n\e[1m\e[42mTop 10 des cryptos à la plus grande valeur\e[0m\n\n"
-  highest_sorted_cryptos = CRYPTO_HASH.sort_by {|key, value| value.to_f}.reverse.take(10).to_h
-  highest_sorted_cryptos.each do |keypair|
-    puts "#{keypair.first} \u{2192} #{keypair.last}"
+def top_10
+  puts "\n\e[1m\e[42mTop 10 des cryptos\e[0m\n\n"
+  top_10_cryptos = CRYPTO_HASH.sort_by {|key, value| value.to_f}
+                                .reverse.take(10)
+  top_10_cryptos.each do |key, value|
+    puts "#{key} \u{2192} \e[32m\e[1m#{value}€\e[0m"
   end
   return_to_menu
 end
 
-def lowest_sort
-  puts "\n\e[1m\e[41mTop 10 des cryptos à la plus petite valeur\e[0m\n\n"
-  lowest_sorted_cryptos = CRYPTO_HASH.sort_by {|key, value| value.to_f}.take(10).to_h
-  lowest_sorted_cryptos.each do |keypair|
-    puts "#{keypair.first} \u{2192} #{keypair.last}"
+def bottom_10
+  puts "\n\e[1m\e[41mBottom 10 des cryptos\e[0m\n\n"
+  bottom_10_cryptos = CRYPTO_HASH.sort_by {|key, value| value.to_f}
+                                  .take(10)
+  bottom_10_cryptos.each do |key, value|
+    puts "#{key} \u{2192} \e[31m\e[1m#{value}€\e[0m"
   end
+  return_to_menu
+end
+
+def top_10_under_threshold
+  puts "\n\e[1m\e[42mTop 10 des cryptos en dessous de 6000€\e[0m\n\n"
+
+  top_10_cryptos = CRYPTO_HASH.select { |_, value| value.to_f < 6000 }
+                                .sort_by { |_, value| value.to_f }
+                                .reverse
+                                .take(10)
+  top_10_cryptos.each do |key, value|
+    puts "#{key} \u{2192} \e[32m\e[1m#{value}€\e[0m"
+  end
+
+  return_to_menu
+end
+
+def top_under_threshold
+  puts "\n\e[1m\e[42mTop crypto en dessous de 6000€\e[0m\n\n"
+  top_under_6000 = CRYPTO_HASH.select { |_, value| value.to_f < 6000 }
+                              .max_by { |_, value| value.to_f }
+  puts "#{top_under_6000[0]} \u{2192} \e[32m\e[1m#{top_under_6000[1]}€\e[0m"
   return_to_menu
 end
 
 def menu
   loop do
-    puts "\n\e[33m\e[4mChoisis une fonction à exécuter\e[0m\n\n\e[41m1\e[0m Top 10 descendant\n\e[42m2\e[0m Top 10 montant\n\e[43m3\e[0m Devises < 6000\n\e[44m4\e[0m Devise la plus chère < 6000\n\e[47mX\e[0m Quitter"
+    puts "\n\e[33m\e[4mChoisis une fonction à exécuter\e[0m\n\n\e[42m1\e[0m Top 10\n\e[41m2\e[0m Bottom 10\n\e[43m3\e[0m Top 10 < 6000€\n\e[44m4\e[0m Top < 6000€\n\e[47mX\e[0m Quitter"
     input = user_prompt
     case input
     when "1"
-      highest_sort
+      top_10
       break
     when "2"
-      lowest_sort
+      bottom_10
       break
     when "3"
-      five_characters_handles
+      top_10_under_threshold
       break
     when "4"
-      uppercase_handles
+      top_under_threshold
       break
-    when "x", "X"
+    when "x"
       break
     else
-      puts "\e[41m\e[1mEntrée invalide.\e[0m"
+      puts "\n\e[41m\e[1mEntrée invalide.\e[0m"
       retry_flag = true
     end
     break unless retry_flag
