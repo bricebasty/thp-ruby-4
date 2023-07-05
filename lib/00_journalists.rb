@@ -3,34 +3,34 @@ TWITTER_HANDLES = ["@jcunniet","@PaulLampon","@Aziliz31","@ssoumier","@marionsou
 def user_prompt
   print "\e[1m\e[31m> "
   input = gets.chomp.downcase
-  puts "\e[0m"
+  print "\e[0m"
   return input
 end
 
 def return_to_menu
   loop do
-    print "Veux-tu revenir au menu ? \e[1mY/N\e[0m  "
+    print "\nVeux-tu revenir au menu ? \e[1mY/N\e[0m  "
     input = user_prompt
     if input == "y" || input == "yes"
       menu
       break
     elsif input == "n" || input =="no"
-      puts "Merci d'avoir utilisé ce petit logiciel \u{1F600}\n"
+      puts "\nMerci d'avoir utilisé ce petit logiciel \u{1F600}\n"
       break
     else
-      puts "\e[41m\e[1mEntrée invalide.\e[0m\n\n"
+      puts "\n\e[41m\e[1mEntrée invalide.\e[0m\n"
     end
   end
 end
 
 def handles_quantity
-  puts "\e[1m\e[42mIl y a #{TWITTER_HANDLES.length} handles dans l'array\e[0m\n\n"
+  puts "\n\e[1m\e[42mIl y a #{TWITTER_HANDLES.length} handles dans l'array\e[0m\n"
   return_to_menu
 end
 
 def shortest_handle
   shortest_element = TWITTER_HANDLES.min_by { |element| element.length }
-  puts "\e[1m\e[42mHandle le plus court : #{shortest_element}\e[0m\n\n"
+  puts "\n\e[1m\e[42mHandle le plus court : #{shortest_element}\e[0m\n"
   return_to_menu
 end
 
@@ -41,7 +41,7 @@ def five_characters_handles
       number += 1
     end
   end
-  puts "\e[1m\e[42mNombres de handles contenant 5 caractères : #{number}\e[0m\n\n"
+  puts "\n\e[1m\e[42mNombres de handles contenant 5 caractères : #{number}\e[0m\n"
   return_to_menu
 end
 
@@ -53,25 +53,25 @@ def uppercase_handles
       number += 1
     end
   end
-  puts "\e[1m\e[42mNombres de handles commençant par une majuscule : #{number}\e[0m\n\n"
+  puts "\n\e[1m\e[42mNombres de handles commençant par une majuscule : #{number}\e[0m\n"
   return_to_menu
 end
 
 def handles_by_az
   sorted_handles = TWITTER_HANDLES.sort
-  puts "\e[1m\e[32m#{sorted_handles.join("\n")}\e[0m\n\n"
+  puts "\n\e[1m\e[32m#{sorted_handles.join("\n")}\e[0m\n"
   return_to_menu
 end
 
 def handles_by_size
   sorted_handles = TWITTER_HANDLES.sort_by { |element| element.length }
-  puts "\e[1m\e[32m#{sorted_handles.join("\n")}\e[0m\n\n"
+  puts "\n\e[1m\e[32m#{sorted_handles.join("\n")}\e[0m\n"
   return_to_menu
 end
 
 def epenser_position
   index = TWITTER_HANDLES.index("@epenser")
-  puts "\e[1m\e[42m@epenser est à la position #{index} dans l'array\e[0m\n\n"
+  puts "\n\e[1m\e[42m@epenser est à la position #{index} dans l'array\e[0m\n"
   return_to_menu
 end
 
@@ -80,7 +80,7 @@ def size_repartition
   sorted_repartition = repartition.sort_by { |length, _elements| length }.to_h
 
   sorted_repartition.each do |length, elements|
-    puts "\e[1m\e[42mHandles de #{length - 1} caractères :\e[0m\e[32m #{elements.join(', ')}\e[0m\n\n"
+    puts "\n\e[1m\e[42mHandles de #{length - 1} caractères :\e[0m\e[32m #{elements.join(', ')}\e[0m\n"
   end
   return_to_menu
 end
