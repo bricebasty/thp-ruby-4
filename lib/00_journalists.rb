@@ -10,11 +10,12 @@ end
 def return_to_menu
   loop do
     print "\nVeux-tu revenir au menu ? \e[1mY/N\e[0m  "
-    input = user_prompt
-    if input == "y" || input == "yes"
+    input = user_prompt.downcase
+    case input
+    when "y", "yes"
       menu
       break
-    elsif input == "n" || input =="no"
+    when "n", "no"
       puts "\nMerci d'avoir utilisé ce petit logiciel \u{1F600}\n"
       break
     else
@@ -35,24 +36,13 @@ def shortest_handle
 end
 
 def five_characters_handles
-  number = 0
-  TWITTER_HANDLES.each do |element|
-    if element.length == 6
-      number += 1
-    end
-  end
+  number = TWITTER_HANDLES.count { |element| element.length == 6 }
   puts "\n\e[32mNombres de handles contenant 5 caractères : \e[1m\e[42m\e[30m#{number}\e[0m\n"
   return_to_menu
 end
 
 def uppercase_handles
-  number = 0
-  TWITTER_HANDLES.each do |element|
-    second_character = element[1]
-    if second_character == second_character.upcase
-      number += 1
-    end
-  end
+  number = TWITTER_HANDLES.count { |element| element[1] == element[1].upcase }
   puts "\n\e[32mNombres de handles commençant par une majuscule : \e[1m\e[42m\e[30m#{number}\e[0m\n"
   return_to_menu
 end
@@ -76,50 +66,46 @@ def epenser_position
 end
 
 def size_repartition
-  repartition = TWITTER_HANDLES.group_by { |element| element.length }
-  sorted_repartition = repartition.sort_by { |length, _elements| length }.to_h
+  repartition = TWITTER_HANDLES.group_by(&:length)
+  sorted_repartition = repartition.transform_values(&:size).sort.to_h
 
-  sorted_repartition.each do |length, elements|
-    puts "\n\e[32m#{length - 1} caractères : \e[0m\e[1m\e[30m\e[42m#{elements.length} handle(s)\e[0m\n"
+  sorted_repartition.each do |length, count|
+    puts "\n\e[32m#{length - 1} caractères : \e[0m\e[1m\e[30m\e[42m#{count} handle(s)\e[0m\n"
   end
   return_to_menu
 end
 
 def menu
   loop do
-    puts "\n\e[33m\e[4mChoisis une fonction à exécuter\e[0m\n\n\e[30m\e[41m1\e[0m Nombre de handles dans l'array\n\e[30m\e[42m2\e[0m Handle le plus court\n\e[30m\e[43m3\e[0m Nombre de handles contenant 5 caractères\n\e[30m\e[44m4\e[0m Handles commençant par une majuscule\n\e[30m\e[45m5\e[0m Handles par ordre alphabétique\n\e[30m\e[46m6\e[0m Handles par taille\n\e[30m\e[41m7\e[0m Position de @epenser\n\e[30m\e[42m8\e[0m Répartition des handles par taille\n\e[30m\e[47mX\e[0m Quitter"
+    puts <<~MENU
+      \n\e[33m\e[4mChoisis une fonction à exécuter\e[0m\n\n
+      \e[30m\e[41m1\e[0m Nombre de handles dans l'array
+      \e[30m\e[42m2\e[0m Handle le plus court
+      \e[30m\e[43m3\e[0m Nombre de handles contenant 5 caractères
+      \e[30m\e[44m4\e[0m Handles commençant par une majuscule
+      \e[30m\e[45m5\e[0m Handles par ordre alphabétique
+      \e[30m\e[46m6\e[0m Handles par taille
+      \e[30m\e[41m7\e[0m Position de @epenser
+      \e[30m\e[42m8\e[0m Répartition des handles par taille\n
+      \e[30m\e[47mX\e[0m Quitter
+    MENU
+
     input = user_prompt
     case input
-    when "1"
-      handles_quantity
-      break
-    when "2"
-      shortest_handle
-      break
-    when "3"
-      five_characters_handles
-      break
-    when "4"
-      uppercase_handles
-      break
-    when "5"
-      handles_by_az
-      break
-    when "6"
-      handles_by_size
-      break
-    when "7"
-      epenser_position
-      break
-    when "8"
-      size_repartition
-      break
-    when "x"
-      break
+    when "1" then handles_quantity
+    when "2" then shortest_handle
+    when "3" then five_characters_handles
+    when "4" then uppercase_handles
+    when "5" then handles_by_az
+    when "6" then handles_by_size
+    when "7" then epenser_position
+    when "8" then size_repartition
+    when "x" then break
     else
       puts "\n\e[41m\e[30m\e[1mEntrée invalide.\e[0m"
       retry_flag = true
     end
+
     break unless retry_flag
     retry_flag = false
   end

@@ -29,18 +29,15 @@ end
 
 def top_10
   puts "\n\e[1m\e[42m\e[30mTop 10 des cryptos\e[0m\n\n"
-  top_10_cryptos = CRYPTO_HASH.sort_by {|key, value| value.to_f}
-                                .reverse.take(10)
-  top_10_cryptos.each do |key, value|
-    puts "#{key} \u{2192} \e[32m\e[1m#{value}€\e[0m"
-  end
+  top_10_cryptos = CRYPTO_HASH.sort_by { |_, value| value.to_f }.reverse.first(10)
+  top_10_cryptos.each { |key, value| puts "#{key} \u{2192} \e[32m\e[1m#{value}€\e[0m" }
   return_to_menu
 end
 
 def bottom_10
   puts "\n\e[1m\e[41m\e[30mBottom 10 des cryptos\e[0m\n\n"
-  bottom_10_cryptos = CRYPTO_HASH.sort_by {|key, value| value.to_f}
-                                  .take(10)
+  bottom_10_cryptos = CRYPTO_HASH.sort_by {|_key, value| value.to_f}
+                                  .first(10)
   bottom_10_cryptos.each do |key, value|
     puts "#{key} \u{2192} \e[31m\e[1m#{value}€\e[0m"
   end
@@ -68,23 +65,22 @@ end
 
 def menu
   loop do
-    puts "\n\e[33m\e[4mChoisis une fonction à exécuter\e[0m\n\n\e[42m\e[30m1\e[0m Top 10\n\e[41m\e[30m2\e[0m Bottom 10\n\e[30m\e[43m3\e[0m < 6000€\n\e[30m\e[44m4\e[0m Top 1 < 6000€\n\e[30m\e[47mX\e[0m Quitter"
+    puts <<~MENU
+    \n\e[33m\e[4mChoisis une fonction à exécuter\e[0m\n
+    \e[42m\e[30m1\e[0m Top 10
+    \e[41m\e[30m2\e[0m Bottom 10
+    \e[30m\e[43m3\e[0m < 6000€
+    \e[30m\e[44m4\e[0m Top 1 < 6000€\n
+    \e[30m\e[47mX\e[0m Quitter
+    MENU
+
     input = user_prompt
     case input
-    when "1"
-      top_10
-      break
-    when "2"
-      bottom_10
-      break
-    when "3"
-      top_10_under_threshold
-      break
-    when "4"
-      top_under_threshold
-      break
-    when "x"
-      break
+    when "1" then top_10
+    when "2" then bottom_10
+    when "3" then top_10_under_threshold
+    when "4" then top_under_threshold
+    when "x" then break
     else
       puts "\n\e[41m\e[30m\e[1mEntrée invalide.\e[0m"
       retry_flag = true
