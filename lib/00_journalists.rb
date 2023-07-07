@@ -42,7 +42,7 @@ def five_characters_handles
 end
 
 def uppercase_handles
-  number = TWITTER_HANDLES.count { |element| element[1] == element[1].upcase }
+  number = TWITTER_HANDLES.count { |element| element[1] =~ /[A-Z]/ }
   puts "\n\e[32mNombres de handles commençant par une majuscule : \e[1m\e[42m\e[30m#{number}\e[0m\n"
   return_to_menu
 end
